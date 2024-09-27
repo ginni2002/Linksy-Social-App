@@ -73,4 +73,35 @@ const logoutUser = (req, res) => {
     console.log("Error in logoutUser: ", err.message);
   }
 };
-export { signupUser, loginUser, logoutUser };
+
+const followUnFollowUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userToModify = await User.findById(id);
+    const currentUser = await User.findById(req.user._id); //req.user is added from middle "protectRoute"
+    if (id === req.user._id) {
+      return res
+        .status(400)
+        .json({ message: "You cannot follow/unfollow yourself" });
+    }
+    if (!userToModify || !currentUser) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const isFollowingCheck = currentUser.following.includes(id);
+    if (isFollowingCheck) {
+      //unfollow -> Removing by pulling user Id from 'following' array of current_user.
+      // And Removing by pulling current_user Id from 'followers' array of user.
+      await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
+      await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } });
+    } else {
+      //follow -> Adding by pushing user Id in 'following' array of current_user.
+      //And adding by pushing current_user Id in 'followers' array of user.
+      await User.findByIdAndUpdate(req.user._id, { $push: { following: id } });
+      await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log("Error in followUnFollowUser: ", err.message);
+  }
+};
+export { signupUser, loginUser, logoutUser, followUnFollowUser };
