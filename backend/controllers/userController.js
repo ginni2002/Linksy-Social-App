@@ -79,7 +79,9 @@ const followUnFollowUser = async (req, res) => {
     const { id } = req.params;
     const userToModify = await User.findById(id);
     const currentUser = await User.findById(req.user._id); //req.user is added from middle "protectRoute"
-    if (id === req.user._id) {
+    // console.log("id:", id, "type:", typeof id); //string
+    // console.log("req.user._id:", req.user._id, "type:", typeof req.user._id); //object
+    if (id === req.user._id.toString()) {
       return res
         .status(400)
         .json({ message: "You cannot follow/unfollow yourself" });
@@ -93,15 +95,55 @@ const followUnFollowUser = async (req, res) => {
       // And Removing by pulling current_user Id from 'followers' array of user.
       await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
       await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } });
+      res.status(200).json({ message: "User unfollowed successfully" });
     } else {
       //follow -> Adding by pushing user Id in 'following' array of current_user.
       //And adding by pushing current_user Id in 'followers' array of user.
       await User.findByIdAndUpdate(req.user._id, { $push: { following: id } });
       await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } });
+      res.status(200).json({ message: "User followed successfully" });
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log("Error in followUnFollowUser: ", err.message);
   }
 };
-export { signupUser, loginUser, logoutUser, followUnFollowUser };
+
+const updateUser = async (req, res) => {
+  try {
+    const { name, email, username, password, profilePic, bio } = req.body;
+    const userId = req.user._id; //got from middleware
+    // console.log("Value of userId while update: ", userId);
+
+    let user = await User.findById(userId);
+    // console.log("Value of user while update: ", user);
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" }); // this is returning
+    }
+    if (req.params.id !== userId.toString()) {
+      return res
+        .status(400)
+        .json({ message: "You cannot update other user's profile." });
+    }
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      user.password = hashedPassword;
+    }
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.username = username || user.username;
+    user.profilePic = profilePic || user.profilePic;
+    user.bio = bio || user.bio;
+
+    user = await user.save();
+
+    res.status(200).json({ message: "User updated successfully", user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log("Error in updateUser: ", err.message);
+  }
+};
+export { signupUser, loginUser, logoutUser, followUnFollowUser, updateUser };
