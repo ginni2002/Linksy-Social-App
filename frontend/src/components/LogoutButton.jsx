@@ -23,7 +23,7 @@ const LogoutButton = () => {
       localStorage.removeItem("user-linksy");
       setUser(null);
     } catch (error) {
-      console.log(error);
+      showToast("Error", error, "error");
     }
   };
   return (
