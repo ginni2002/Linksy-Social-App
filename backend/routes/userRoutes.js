@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   signupUser,
   loginUser,
@@ -11,7 +12,7 @@ import protectRoute from "../middlewares/protectRoutes.js";
 
 const router = express.Router();
 
-router.get("/profile/:username", getUserProfile);
+router.get("/profile/:query", getUserProfile); //query - we will be getting with both username and userid
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
