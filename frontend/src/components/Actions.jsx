@@ -111,7 +111,6 @@ const Actions = ({ post }) => {
       setReply("");
     } catch (error) {
       showToast("Error", error.message, "error");
-      console.log(error);
     } finally {
       setIsReplying(false);
     }

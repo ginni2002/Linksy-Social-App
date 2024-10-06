@@ -23,7 +23,7 @@ const Post = ({ post, postedBy }) => {
         const res = await fetch("/api/users/profile/" + postedBy);
         const data = await res.json();
         if (data.error) {
-          showToast("Error", data.error, error);
+          showToast("Error", data.error, "error");
           return;
         }
         setUser(data);
@@ -43,7 +43,7 @@ const Post = ({ post, postedBy }) => {
       const res = await fetch(`/api/posts/${post._id}`, {
         method: "DELETE",
       });
-      const data = res.json();
+      const data = await res.json();
       if (data.error) {
         showToast("Error", data.error, "error");
         return;

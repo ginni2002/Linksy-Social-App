@@ -75,7 +75,6 @@ const Conversation = ({ conversation }) => {
           {lastMessage.text.length > 18
             ? lastMessage.text.substring(0, 18) + "..."
             : lastMessage.text}
-          ;
         </Text>
       </Stack>
     </Flex>
