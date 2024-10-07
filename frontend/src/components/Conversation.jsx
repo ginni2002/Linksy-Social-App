@@ -7,6 +7,7 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
+  useTheme,
   WrapItem,
 } from "@chakra-ui/react";
 
@@ -16,6 +17,9 @@ import { BsCheck2All } from "react-icons/bs";
 import { selectedConversationAtom } from "../atoms/messagesAtom";
 
 const Conversation = ({ conversation, isOnline }) => {
+  const theme = useTheme();
+  const blue400 = theme.colors.blue[400];
+
   const user = conversation.participants[0];
   const currentUser = useRecoilValue(userAtom);
   const lastMessage = conversation.lastMessage;
@@ -69,7 +73,9 @@ const Conversation = ({ conversation, isOnline }) => {
         </Text>
         <Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
           {currentUser._id === lastMessage.sender ? (
-            <BsCheck2All size={16} />
+            <span style={{ color: lastMessage.seen ? blue400 : "inherit" }}>
+              <BsCheck2All size={16} />
+            </span>
           ) : (
             ""
           )}
