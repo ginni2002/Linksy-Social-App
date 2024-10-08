@@ -34,6 +34,7 @@ const UserPage = () => {
 
     getPosts();
   }, [username, showToast, setPosts, user]);
+
   if (!user && loading) {
     return (
       <Flex justifyContent={"center"}>
@@ -41,6 +42,7 @@ const UserPage = () => {
       </Flex>
     );
   }
+
   if (!user && !loading) return <h1>User not found :(</h1>;
 
   return (
