@@ -45,13 +45,48 @@ import { AiFillHtml5 } from "react-icons/ai";
 import { DiCss3 } from "react-icons/di";
 import { MdOutlineNetworkWifi, MdSecurity, MdPayment } from "react-icons/md";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import AboutLinksy from "../components/AboutLinksy";
 import AboutUsConnectSection from "../components/AboutUsConnectSection";
 import AboutFooter from "../components/AboutFooter";
 
 export default function AboutPage() {
+  const articleListRef = useRef(null);
+  const AboutLinksyRef = useRef(null);
+
+  const smoothScrollTo = useCallback((elementRef) => {
+    const targetPosition = elementRef.current.offsetTop;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    const duration = 1000; // ms
+    let start = null;
+
+    const easeInOutQuad = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const percentage = Math.min(progress / duration, 1);
+      const easePercentage = easeInOutQuad(percentage);
+
+      window.scrollTo(0, startPosition + distance * easePercentage);
+
+      if (progress < duration) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    window.requestAnimationFrame(step);
+  }, []);
+
+  const scrollToArticleList = useCallback(() => {
+    smoothScrollTo(articleListRef);
+  }, [smoothScrollTo]);
+
+  const scrollToAboutLinksy = useCallback(() => {
+    smoothScrollTo(AboutLinksyRef);
+  }, [smoothScrollTo]);
   return (
     <Flex flexDirection={"column"} mt={{ base: "10px", md: "150px" }}>
       <Stack direction={{ base: "column", md: "row" }}>
@@ -115,10 +150,13 @@ export default function AboutPage() {
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={scrollToAboutLinksy}
               >
                 How this app works?
               </Button>
-              <Button rounded={"full"}>About me</Button>
+              <Button rounded={"full"} onClick={scrollToArticleList}>
+                About me
+              </Button>
             </Stack>
           </Stack>
         </Flex>
@@ -133,11 +171,16 @@ export default function AboutPage() {
           />
         </Flex>
       </Stack>
-      <ArticleList />
+      <Flex ref={articleListRef}>
+        <ArticleList />
+      </Flex>
       <CertificateShowcase />
       <AboutUsConnectSection />
       <GridListWith />
-      <AboutLinksy />
+      <Flex ref={AboutLinksyRef}>
+        <AboutLinksy />
+      </Flex>
+
       <AboutFooter />
     </Flex>
   );
