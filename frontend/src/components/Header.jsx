@@ -1,4 +1,10 @@
-import { Button, Flex, Image, useColorMode } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Image,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import { Link as RouterLink, Link } from "react-router-dom";
@@ -11,7 +17,7 @@ import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdOutlineSettings } from "react-icons/md";
 
 const Header = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const user = useRecoilValue(userAtom);
   const logout = useLogout();
   const setAuthScreen = useSetRecoilState(authScreenAtom);
@@ -24,22 +30,39 @@ const Header = () => {
       )}
 
       {!user && (
-        <Link
+        <Button
           as={RouterLink}
           to={"/auth"}
           onClick={() => setAuthScreen("login")}
+          bg={useColorModeValue("gray.300", "gray.600")}
+          color={useColorModeValue("gray.800", "white")}
+          _hover={{
+            bg: useColorModeValue("gray.400", "gray.500"),
+            transform: "translateY(-1px)",
+          }}
+          _active={{
+            bg: useColorModeValue("gray.500", "gray.700"),
+            transform: "scale(0.98)",
+          }}
+          size="md"
+          borderRadius="md"
+          boxShadow="md"
         >
           Login
-        </Link>
+        </Button>
       )}
-
-      <Image
-        cursor={"pointer"}
-        alt="logo"
-        w={6}
-        src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
-        onClick={toggleColorMode}
-      />
+      <Link to={`/about-Us`}>
+        <Image
+          cursor={"pointer"}
+          alt="logo"
+          w={10}
+          src={
+            colorMode === "dark"
+              ? "/linksylogo-light.png"
+              : "/linksy-darklogo.png"
+          }
+        />
+      </Link>
 
       {user && (
         <Flex alignItems={"center"} gap={4}>
@@ -59,13 +82,26 @@ const Header = () => {
       )}
 
       {!user && (
-        <Link
+        <Button
           as={RouterLink}
           to={"/auth"}
           onClick={() => setAuthScreen("signup")}
+          bg={useColorModeValue("gray.300", "gray.600")}
+          color={useColorModeValue("gray.800", "white")}
+          _hover={{
+            bg: useColorModeValue("gray.400", "gray.500"),
+            transform: "translateY(-1px)",
+          }}
+          _active={{
+            bg: useColorModeValue("gray.500", "gray.700"),
+            transform: "scale(0.98)",
+          }}
+          size="md"
+          borderRadius="md"
+          boxShadow="md"
         >
-          Sign Up
-        </Link>
+          Sign up
+        </Button>
       )}
     </Flex>
   );

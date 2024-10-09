@@ -34,7 +34,7 @@ const Conversation = ({ conversation, isOnline }) => {
       p={"1"}
       _hover={{
         cursor: "pointer",
-        bg: useColorModeValue("gray.600", "gray.dark"),
+        bg: useColorModeValue("gray.500", "gray.700"),
         color: "white",
       }}
       onClick={() =>

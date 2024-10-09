@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Link as RouterLink, Link } from "react-router-dom";
-import { BiNetworkChart } from "react-icons/bi";
+
 import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -49,7 +49,7 @@ const UserHeader = ({ user }) => {
             {user.name}
           </Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>{user.username}</Text>
+            <Text fontSize={"sm"}>@{user.username}</Text>
             <Text
               fontSize={"xs"}
               bg={"gray.dark"}
@@ -106,9 +106,6 @@ const UserHeader = ({ user }) => {
         </Flex>
         <Flex>
           <Box className="icon-container">
-            <BiNetworkChart size={24} cursor={"pointer"} />
-          </Box>
-          <Box className="icon-container">
             <Menu>
               <MenuButton>
                 <CgMoreO size={24} cursor={"pointer"} />
@@ -132,9 +129,9 @@ const UserHeader = ({ user }) => {
           pb="3"
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}>Linklets</Text>
+          <Text fontWeight={"bold"}>Your Posts</Text>
         </Flex>
-        <Flex
+        {/* <Flex
           flex={1}
           borderBottom={"1px solid gray"}
           justifyContent={"center"}
@@ -143,7 +140,7 @@ const UserHeader = ({ user }) => {
           cursor={"pointer"}
         >
           <Text fontWeight={"bold"}>Replies</Text>
-        </Flex>
+        </Flex> */}
       </Flex>
     </VStack>
   );

@@ -91,12 +91,17 @@ const CreatePost = () => {
         position={"fixed"}
         bottom={10}
         right={5}
-        bg={useColorModeValue("gray.300", "gray.dark")}
+        bg={useColorModeValue("gray.300", "gray.600")}
+        color={useColorModeValue("gray.800", "white")}
+        _hover={{
+          bg: useColorModeValue("gray.400", "gray.500"),
+        }}
         onClick={onOpen}
         size={{ base: "sm", sm: "md" }}
       >
-        <AddIcon />
+        POST <AddIcon ml={2} />
       </Button>
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
