@@ -12,21 +12,33 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import { SettingsPage } from "./pages/SettingsPage";
-//rafce
+import ColorModeToggleButton from "./components/ColorModeToggleButton";
+import AboutPage from "./pages/AboutPage";
+
 function App() {
   const user = useRecoilValue(userAtom);
   const { pathname } = useLocation();
   return (
     <Box position={"relative"} w="full">
       <Container
-        maxW={pathname === "/" ? { base: "620px", md: "900px" } : "620px"}
+        maxW={
+          pathname === "/about-Us"
+            ? "100%"
+            : pathname === "/"
+            ? { base: "620px", md: "900px" }
+            : "620px"
+        }
       >
         <Header />
+
         <Routes>
           <Route
             path="/"
             element={user ? <HomePage /> : <Navigate to="/auth" />}
           />
+
+          <Route path="/about-Us" element={<AboutPage />} />
+
           <Route
             path="/auth"
             element={!user ? <AuthPage /> : <Navigate to="/" />}
@@ -60,6 +72,7 @@ function App() {
           />
         </Routes>
       </Container>
+      <ColorModeToggleButton />
     </Box>
   );
 }
