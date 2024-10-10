@@ -19,6 +19,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
 import postsAtom from "../atoms/postsAtom";
+import ShareModal from "./ShareModal";
 
 const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom);
@@ -30,6 +31,7 @@ const Actions = ({ post }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [reply, setReply] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isModalOpen, setIsModalOpen] = useState(false); //for sharing
   const handleLikeAndUnlike = async () => {
     if (!user) {
       return showToast(
@@ -115,6 +117,16 @@ const Actions = ({ post }) => {
       setIsReplying(false);
     }
   };
+
+  const handleShareClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const postLink = `https://linksy.onrender.com`;
   return (
     <Flex flexDirection="column">
       <Flex gap={3} my={2} onClick={(e) => e.preventDefault()}>
@@ -154,8 +166,15 @@ const Actions = ({ post }) => {
             strokeWidth="2"
           ></path>
         </svg>
-        <RepostSVG />
-        <ShareSVG />
+
+        <div onClick={handleShareClick}>
+          <ShareSVG />
+        </div>
+        <ShareModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          postLink={postLink}
+        />
       </Flex>
       <Flex gap={2} alignItems={"center"}>
         <Text color={"gray.light"} fontSize="sm">
@@ -200,26 +219,6 @@ const Actions = ({ post }) => {
 };
 
 export default Actions;
-
-const RepostSVG = () => {
-  return (
-    <svg
-      aria-label="Repost"
-      color="currentColor"
-      fill="currentColor"
-      height="20"
-      role="img"
-      viewBox="0 0 24 24"
-      width="20"
-    >
-      <title>Repost</title>
-      <path
-        fill=""
-        d="M19.998 9.497a1 1 0 0 0-1 1v4.228a3.274 3.274 0 0 1-3.27 3.27h-5.313l1.791-1.787a1 1 0 0 0-1.412-1.416L7.29 18.287a1.004 1.004 0 0 0-.294.707v.001c0 .023.012.042.013.065a.923.923 0 0 0 .281.643l3.502 3.504a1 1 0 0 0 1.414-1.414l-1.797-1.798h5.318a5.276 5.276 0 0 0 5.27-5.27v-4.228a1 1 0 0 0-1-1Zm-6.41-3.496-1.795 1.795a1 1 0 1 0 1.414 1.414l3.5-3.5a1.003 1.003 0 0 0 0-1.417l-3.5-3.5a1 1 0 0 0-1.414 1.414l1.794 1.794H8.27A5.277 5.277 0 0 0 3 9.271V13.5a1 1 0 0 0 2 0V9.271a3.275 3.275 0 0 1 3.271-3.27Z"
-      ></path>
-    </svg>
-  );
-};
 
 const ShareSVG = () => {
   return (

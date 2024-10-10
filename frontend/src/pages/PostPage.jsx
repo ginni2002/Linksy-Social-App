@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Divider,
   Flex,
   Image,
@@ -127,14 +126,14 @@ const PostPage = () => {
         <Actions post={currentPost} />
       </Flex>
 
-      <Divider my={4} />
+      {/* <Divider my={4} />
       <Flex justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
           <Text fontSize={"2xl"}>👋</Text>
           <Text color={"gray.light"}>Get the app to like, reply and post.</Text>
         </Flex>
         <Button>Get</Button>
-      </Flex>
+      </Flex> */}
 
       <Divider my={4} />
       {currentPost.replies.map((reply) => (

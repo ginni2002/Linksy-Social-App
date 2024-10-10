@@ -18,6 +18,8 @@ import { CgMoreO } from "react-icons/cg";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useFollowUnFollow from "../hooks/useFollowUnFollow";
+import Followers from "./Followers";
+import Following from "./Following";
 
 const UserHeader = ({ user }) => {
   //getting props from parent component
@@ -50,15 +52,6 @@ const UserHeader = ({ user }) => {
           </Text>
           <Flex gap={2} alignItems={"center"}>
             <Text fontSize={"sm"}>@{user.username}</Text>
-            <Text
-              fontSize={"xs"}
-              bg={"gray.dark"}
-              color={"gray.light"}
-              p={1}
-              borderRadius={"full"}
-            >
-              linksy.net
-            </Text>
           </Flex>
         </Box>
         <Box>
@@ -75,7 +68,7 @@ const UserHeader = ({ user }) => {
           {!user.profilePic && (
             <Avatar
               name={user.username}
-              src="https://bit.ly/broken-link"
+              src=""
               size={{
                 base: "md",
                 md: "xl",
@@ -100,9 +93,8 @@ const UserHeader = ({ user }) => {
 
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"}>{user.followers.length} followers</Text>
-          <Box w="1" h="1" bg={"gray.light"} borderRadius={"full"}></Box>
-          <Link color={"gray.light"}>linksy.com</Link>
+          <Followers userId={user._id} followerCount={user.followers.length} />
+          <Following userId={user._id} followingCount={user.following.length} />
         </Flex>
         <Flex>
           <Box className="icon-container">
