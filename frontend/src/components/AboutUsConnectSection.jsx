@@ -101,7 +101,7 @@ function AboutUsConnectSection() {
       </HStack>
 
       <Link
-        href="https://drive.google.com/file/d/1Ik0AOU5B5G60y23yPnhZgkoYyY6aiidq/view"
+        href="https://docs.google.com/document/d/1ngUsOgmphq1HOw-Ez20YzWoAbOlq48mmTc7s9ctWLnw/edit?usp=sharing"
         isExternal
         px={6}
         py={3}
